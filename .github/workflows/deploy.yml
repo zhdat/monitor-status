@@ -1,0 +1,60 @@
+name: Deploy Uptime Monitor
+
+on:
+  push:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  # Remplace par ton pseudo GitHub en minuscules
+  IMAGE_NAME: ton-pseudo/uptime-monitor
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            # 1. Login au registre
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # 2. Pull de la nouvelle image
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+            # 3. Arrêt et suppression de l'ancien conteneur
+            docker stop uptime-monitor || true
+            docker rm uptime-monitor || true
+
+            # 4. Lancement du nouveau (Port 3001, Volume pour la DB)
+            docker run -d \
+              --name uptime-monitor \
+              --restart unless-stopped \
+              -p 3001:3001 \
+              -v uptime-data:/app/data \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
