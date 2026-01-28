@@ -7,7 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   # Remplace par ton pseudo GitHub en minuscules
-  IMAGE_NAME: ton-pseudo/uptime-monitor
+  IMAGE_NAME: zhdat/uptime-monitor
 
 jobs:
   build-and-deploy:
