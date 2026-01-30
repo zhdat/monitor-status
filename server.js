@@ -11,7 +11,7 @@ const db = new sqlite3.Database("./monitor.db");
 const SITES = [
   {
     id: "portfolio",
-    name: "Portfolio Infrastructure",
+    name: "Portfolio",
     url: "https://calliste-portfolio.dynv6.net",
     description: "Site personnel & CV (VPS/Docker)",
   },
@@ -44,11 +44,7 @@ setInterval(async () => {
         now,
       ]);
     } catch (error) {
-      db.run(`INSERT INTO pings (url, status, timestamp) VALUES (?, ?, ?)`, [
-        site.url,
-        -1,
-        now,
-      ]);
+      db.run(`INSERT INTO pings (url, status, timestamp) VALUES (?, ?, ?)`, [site.url, -1, now]);
     }
   }
 }, 60 * 1000);
@@ -69,7 +65,7 @@ app.get("/api/status", (req, res) => {
         const history = rows.filter((row) => row.url === site.url);
 
         // Déterminer l'état actuel (basé sur le dernier ping)
-        const lastPing = history[history.length - 1];
+        const lastPing = history.at(-1);
         const isUp = lastPing ? lastPing.status !== -1 : true;
         const latency = lastPing ? lastPing.status : 0;
 
