@@ -17,7 +17,7 @@ const SITES = [
   },
   {
     id: "gdpatisserie",
-    name: "GD Pâtisserie (Demo)",
+    name: "GD Pâtisserie",
     url: "https://gd-patisserie.dynv6.net",
     description: "E-commerce Next.js & Prisma",
   },
