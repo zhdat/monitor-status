@@ -36,7 +36,7 @@ setInterval(async () => {
   for (const site of SITES) {
     try {
       const start = Date.now();
-      await axios.get(site.url, { timeout: 5000 });
+      await axios.get(site.url, { timeout: 15000 });
       const duration = Date.now() - start;
       db.run(`INSERT INTO pings (url, status, timestamp) VALUES (?, ?, ?)`, [
         site.url,
