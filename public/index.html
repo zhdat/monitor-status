@@ -3,12 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>État des Services | Callister</title>
+    <title>État des Services | Calliste</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+      rel="stylesheet" />
     <style>
       body {
         font-family: "Inter", sans-serif;
@@ -27,27 +26,20 @@
   <body class="bg-slate-50 text-slate-900 min-h-screen p-6 md:p-12">
     <div class="max-w-4xl mx-auto">
       <header
-        class="mb-12 text-center md:text-left flex flex-col md:flex-row justify-between items-end border-b border-slate-200 pb-6"
-      >
+        class="mb-12 text-center md:text-left flex flex-col md:flex-row justify-between items-end border-b border-slate-200 pb-6">
         <div>
-          <h1 class="text-3xl font-bold tracking-tight text-slate-900">
-            État des Services
-          </h1>
+          <h1 class="text-3xl font-bold tracking-tight text-slate-900">État des Services</h1>
           <p class="text-slate-500 mt-2">
             Moniteur de disponibilité de l'infrastructure en temps réel.
           </p>
         </div>
         <div
           id="global-status"
-          class="mt-4 md:mt-0 flex items-center px-4 py-2 bg-white rounded-full border border-slate-200 shadow-sm text-sm font-medium"
-        >
+          class="mt-4 md:mt-0 flex items-center px-4 py-2 bg-white rounded-full border border-slate-200 shadow-sm text-sm font-medium">
           <span class="relative flex h-3 w-3 mr-2">
             <span
-              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"
-            ></span>
-            <span
-              class="relative inline-flex rounded-full h-3 w-3 bg-slate-500"
-            ></span>
+              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-slate-500"></span>
           </span>
           Chargement...
         </div>
@@ -84,8 +76,7 @@
                       ? "bg-yellow-400"
                       : "bg-emerald-400";
                 const time = new Date(ping.timestamp).toLocaleTimeString();
-                const statusText =
-                  ping.status === -1 ? "Down" : `${ping.status}ms`;
+                const statusText = ping.status === -1 ? "Down" : `${ping.status}ms`;
 
                 return `
                             <div class="group relative flex-1 mx-[1px] h-full rounded-sm ${color} hover:opacity-80 cursor-pointer">
@@ -158,8 +149,7 @@
                     `;
           }
 
-          document.getElementById("last-update").innerText =
-            new Date().toLocaleTimeString();
+          document.getElementById("last-update").innerText = new Date().toLocaleTimeString();
         } catch (e) {
           console.error("Erreur de fetch", e);
         }
